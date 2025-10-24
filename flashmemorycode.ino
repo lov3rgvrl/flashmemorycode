@@ -6,10 +6,9 @@
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-// ====== SETTINGS ======
+// settings 
 const char* LOG_PATH = "/bme680.csv";
-const uint32_t SAMPLE_INTERVAL_MS = 10000;   // 10 seconds
-// If your BME680 is at 0x76, use: Adafruit_BME680 bme(BME680_I2C_ADDR_SECONDARY);
+const uint32_t SAMPLE_INTERVAL_MS = 10000;   // every 10 seconds
 Adafruit_BME680 bme; // default I2C addr 0x77
 
 uint32_t lastSample = 0;
@@ -30,7 +29,7 @@ void setup() {
   while (!Serial) { delay(10); }
   Serial.println(F("\nBME680 -> LittleFS Flash Logger (°F, 10s interval)"));
 
-  // ---- Mount LittleFS ----
+  // mount LittleFS 
   if (!LittleFS.begin()) {
     Serial.println(F("LittleFS mount failed. Formatting..."));
     LittleFS.format();
@@ -42,7 +41,7 @@ void setup() {
   Serial.println(F("LittleFS mounted."));
   writeCsvHeaderIfNew();
 
-  // ---- BME680 init ----
+  // BME680 init 
   if (!bme.begin()) {
     Serial.println(F("ERROR: BME680 not found on I2C. Check wiring/address (0x77/0x76)."));
     while (1) { delay(10); }
@@ -103,11 +102,11 @@ void dumpFileToSerial() {
     Serial.println(F("ERROR: Could not open log file for read."));
     return;
   }
-  Serial.println(F("\n----- BEGIN /bme680.csv -----"));
+  Serial.println(F("\n BEGIN /bme680.csv "));
   while (f.available()) {
     Serial.write(f.read());
   }
-  Serial.println(F("----- END /bme680.csv -----\n"));
+  Serial.println(F(" END /bme680.csv \n"));
   f.close();
 }
 
